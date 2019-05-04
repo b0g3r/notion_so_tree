@@ -1,6 +1,5 @@
-from typing import Tuple, Iterable, Dict, List
+from typing import Tuple, Iterable, List
 
-from networkx import Graph, DiGraph
 from pygraphviz import AGraph
 
 from structures import Page, RelatedField, CollectionData
