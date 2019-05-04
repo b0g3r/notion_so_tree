@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "notion_so_tree_visualizer"
+version = "0.1.0"
+description = "So-so. Small util which visualizes exported databases from notion.so"
+authors = ["Dima Boger"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+networkx = "^2.3"
+matplotlib = "^3.0"
+pygraphviz = "^1.5"
+pydot = "^1.4"
+notion = "^0.0.20"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
