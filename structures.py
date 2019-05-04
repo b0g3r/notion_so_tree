@@ -1,43 +1,71 @@
-from dataclasses import dataclass
 from numbers import Number
 from typing import Iterable, Union
 
+import attr
 
-@dataclass
+
+def ensure_pages(values):
+    result = []
+    for value in values:
+        if isinstance(value, Page):
+            result.append(value)
+        else:
+            result.append(Page(**value))
+    return result
+
+
+def ensure_fields(values):
+    result = []
+    _mapping = {
+        'related': RelatedField,
+        'number': NumberField,
+        'text': TextField,
+    }
+    for value in values:
+        if isinstance(value, Field):
+            result.append(value)
+        else:
+            field_type = value.pop('field_type')
+            field_cls = _mapping[field_type]
+            result.append(field_cls(**value))
+    return result
+
+
+@attr.s(frozen=True)
 class Field:
-    name: str
+    name: str = attr.ib()
 
 
-@dataclass
+@attr.s(frozen=True)
 class RelatedField(Field):
-    type = 'related'
-    collection_id: str
-    related_to: Iterable[str]
+    collection_id: str = attr.ib()
+    related_to: Iterable[str] = attr.ib(factory=list)
+    field_type = attr.ib(default='related')
 
 
-@dataclass
+@attr.s(frozen=True)
 class NumberField(Field):
-    type = 'number'
-    number: Union[float, int]
+    number: Union[float, int] = attr.ib()
+    field_type = attr.ib(default='number')
 
 
-@dataclass
+@attr.s(frozen=True)
 class TextField(Field):
-    type = 'text'
-    text: str
+    text: str = attr.ib()
+    field_type = attr.ib(default='text')
 
 
-@dataclass
+@attr.s
 class Page:
-    id: str
-    collection_id: str
-    title: str
-    fields: Iterable[Field]
+    id: str = attr.ib()
+    collection_id: str = attr.ib()
+    title: str = attr.ib()
+    fields: Iterable[Field] = attr.ib(factory=list, convert=ensure_fields)
 
 
-@dataclass
+@attr.s
 class CollectionData:
-    id: str
-    description: str
-    name: str
-    pages: Iterable[Page]
+    id: str = attr.ib()
+    description: str = attr.ib()
+    name: str = attr.ib()
+    pages: Iterable[Page] = attr.ib(factory=list, convert=ensure_pages)
