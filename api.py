@@ -4,7 +4,7 @@ Methods for working with Notion.so API. Uses [notion-py](https://github.com/jama
 from typing import Iterable, List
 
 from notion.client import NotionClient
-from notion.collection import Collection, CollectionRowBlock
+from notion.collection import Collection, CollectionRowBlock, CollectionView
 
 from structures import Page, NumberField, TextField, RelatedField, CollectionData
 
@@ -17,7 +17,7 @@ def get_collections_data(api_key: str, collection_views_urls: Iterable[str]) -> 
     """
     Get collection data (info + pages) from Notion.so API by collection view url list.
     """
-    client = NotionClient(api_key)
+    client = NotionClient(api_key, cache_key='fuck')
     collections_data = [
         get_collection_data(client, url) for url in collection_views_urls
     ]
@@ -25,10 +25,10 @@ def get_collections_data(api_key: str, collection_views_urls: Iterable[str]) -> 
 
 
 def get_collection_data(client: NotionClient, collection_view_url) -> CollectionData:
-    collection = get_collection(client, collection_view_url)
-    collection_rows = get_collection_rows(collection)
+    collection_view = get_collection_view(client, collection_view_url)
+    collection_rows = get_collection_rows(collection_view)
     collection_pages = [convert_collection_row(row) for row in collection_rows]
-    collection_info = combine_collection_data(collection, collection_pages)
+    collection_info = combine_collection_data(collection_view.collection, collection_pages)
     return collection_info
 
 
@@ -41,13 +41,14 @@ def combine_collection_data(collection: Collection, pages: Iterable[Page]) -> Co
     )
 
 
-def get_collection(client: NotionClient, collection_view_url: str) -> Collection:
+def get_collection_view(client: NotionClient, collection_view_url: str) -> CollectionView:
     collection_view = client.get_collection_view(collection_view_url)
-    return collection_view.collection
+    return collection_view
 
-def get_collection_rows(collection: Collection) -> Iterable[CollectionRowBlock]:
-    all_rows = collection.get_rows()
-    return all_rows
+
+def get_collection_rows(collection_view: CollectionView) -> Iterable[CollectionRowBlock]:
+    all_rows = collection_view.build_query().execute()
+    return list(all_rows)
 
 
 def convert_collection_row(row: CollectionRowBlock) -> Page:
