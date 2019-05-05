@@ -17,7 +17,7 @@ def get_collections_data(api_key: str, collection_views_urls: Iterable[str]) -> 
     """
     Get collection data (info + pages) from Notion.so API by collection view url list.
     """
-    client = NotionClient(api_key, cache_key='fuck')
+    client = NotionClient(api_key)
     collections_data = [
         get_collection_data(client, url) for url in collection_views_urls
     ]
