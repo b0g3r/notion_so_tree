@@ -9,7 +9,7 @@ license = "MIT"
 python = "^3.7"
 matplotlib = "^3.0"
 pygraphviz = "^1.5"
-notion = "^0.0.23"
+notion = "^0.0.24"
 attrs = "^19.1"
 click = "^7.0"
 
