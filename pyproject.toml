@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-matplotlib = "^3.0"
+matplotlib = "^3.4"
 pygraphviz = "^1.5"
 notion = "^0.0.23"
 attrs = "^19.1"
