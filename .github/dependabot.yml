@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "02:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - b0g3r
+  assignees:
+  - b0g3r
+  ignore:
+  - dependency-name: matplotlib
+    versions:
+    - 3.3.4
+    - 3.4.0
+  - dependency-name: notion
+    versions:
+    - 0.0.27
+  - dependency-name: pygraphviz
+    versions:
+    - "1.6"
