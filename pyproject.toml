@@ -10,7 +10,7 @@ python = "^3.7"
 matplotlib = "^3.0"
 pygraphviz = "^1.5"
 notion = "^0.0.23"
-attrs = "^19.1"
+attrs = "^21.2"
 click = "^7.1"
 
 [tool.poetry.dev-dependencies]
